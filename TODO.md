@@ -4,7 +4,7 @@
 
 ### Importing Data
 
-- [ ] `land-ocean_temperature_index.csv`
+- [x] `land-ocean_temperature_index.csv`
     - All columns
     - Data class by year stored as a list
 - [ ] `regional-snowfall-index_c20170317.csv`
