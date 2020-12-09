@@ -35,3 +35,11 @@ def import_temperature_data(filepath: str) -> Dict[datetime.date, TemperatureDat
         return {datetime.date(int(row[0]), 1, 1):
                     TemperatureData(datetime.date(int(row[0]), 1, 1), float(row[1]), float(row[2]))
                 for row in reader}
+
+if __name__ == '__main__':
+    python_ta.check_all(config={
+        'extra-imports': [],  # the names (strs) of imported modules
+        'allowed-io': [],     # the names (strs) of functions that call print/open/input
+        'max-line-length': 100,
+        'disable': ['R1705', 'C0200']
+    })
