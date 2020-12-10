@@ -1,6 +1,5 @@
 """CSC110 Project -- Processing Data"""
 
-from snowfall_import import SnowfallData
 from temperature_import import TemperatureData, import_as_dict
 import datetime
 import pandas as pd
@@ -8,12 +7,17 @@ from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.graph_objects as go
 
-SAMPLE = {'Northeast': 5,
+SAMPLE_DICT = {'Northeast': 5,
           'Northern Rockies and Plains': 6,
           'Ohio Valley': 7,
           'South': 8,
           'Southeast': 9,
           'Upper Midwest': 10}
+
+
+SAMPLE_DATAFRAME = pd.DataFrame({'State': ['PA', 'PA', 'NY', 'NY'], 'RSI': [3, 2, 2, 1],
+                                 'Year': [2020, 2021, 2020, 2021]},
+                                columns=['State', 'RSI', 'Year'])
 
 
 REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', 'MD', 'NH'],
@@ -23,10 +27,8 @@ REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', '
            'Southeast': ['VA', 'NC', 'SC', 'AL', 'GA', 'FL'],
            'Upper Midwest': ['MN', 'IA', 'WI', 'MI']}
 
-# def yearly_regional_rsi_sum(Dict[datetime.date, SnowfallData]) -> :
 
-
-def show_plot(data: dict) -> None:
+def show_plotted_dict(data: dict) -> None:
     """asdf"""
     states = []
     [states.extend(REGIONS[region]) for region in data]
@@ -69,4 +71,12 @@ def show_plot(data: dict) -> None:
     )]
 
     fig.update_layout(title_text='test', sliders=sliders)
+    fig.show()
+
+
+def show_animated_df(snowfall: pd.DataFrame) -> None:
+    """Show animated dataframe of snowfall.
+    """
+    fig = px.choropleth(data_frame=snowfall, locations='State', locationmode="USA-states",
+                        scope='usa', animation_frame='Year', color='RSI', range_color=(0, 5))
     fig.show()
