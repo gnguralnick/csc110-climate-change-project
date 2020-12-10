@@ -15,8 +15,11 @@ SAMPLE_DICT = {'Northeast': 5,
           'Upper Midwest': 10}
 
 
-SAMPLE_DATAFRAME = pd.DataFrame({'State': ['PA', 'PA', 'NY', 'NY'], 'RSI': [3, 2, 2, 1],
-                                 'Year': [2020, 2021, 2020, 2021]},
+SAMPLE_DATAFRAME = pd.DataFrame({'State': ['PA', 'PA', 'PA', 'PA', 'PA', 'NY', 'NY', 'NY', 'NY',
+                                           'NY'],
+                                 'RSI': [2, 3, 4, 5, 6, 4, 5, 6, 7, 8],
+                                 'Year': [2015, 2016, 2017, 2018, 2019, 2015, 2016, 2017, 2018,
+                                          2019]},
                                 columns=['State', 'RSI', 'Year'])
 
 
@@ -77,6 +80,12 @@ def show_plotted_dict(data: dict) -> None:
 def show_animated_df(snowfall: pd.DataFrame) -> None:
     """Show animated dataframe of snowfall.
     """
+    min_year = min(snowfall['Year'])
+    max_year = max(snowfall['Year'])
+    max_rsi = max(snowfall['RSI'])
+
     fig = px.choropleth(data_frame=snowfall, locations='State', locationmode="USA-states",
-                        scope='usa', animation_frame='Year', color='RSI', range_color=(0, 5))
+                        scope='usa', animation_frame='Year', animation_group='State', color='RSI',
+                        range_color=(0, max_rsi), title='Title Here')
+
     fig.show()
