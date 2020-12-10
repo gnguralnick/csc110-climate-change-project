@@ -1,5 +1,4 @@
-"""CSC110 Project, Snowfall Import
-"""
+"""CSC110 Project, Temperature Import"""
 
 import csv
 from os import path
