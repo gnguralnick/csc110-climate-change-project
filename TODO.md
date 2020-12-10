@@ -4,9 +4,9 @@
 
 ### Importing Data
 
-- [ ] `land-ocean_temperature_index.csv`
+- [x] `land-ocean_temperature_index.csv`
     - All columns
-    - Data class by year stored as a list
+    - Import as a dict of TemperatureData and as a DataFrame.
 - [ ] `regional-snowfall-index_c20170317.csv`
     - Region
     - Start
