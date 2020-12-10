@@ -33,9 +33,9 @@ def show_plot(data: dict) -> None:
     colors = []
     [colors.extend([data[region]] * len(REGIONS[region])) for region in data]
 
-    fig = make_subplots(rows=1, cols=2,
-                        specs=[[{'type': 'xy'}, {'type': 'xy'}]],
-                        subplot_titles=('Title1 1', 'Title 2'))
+    # fig = make_subplots(rows=1, cols=2,
+    #                     specs=[[{'type': 'xy'}, {'type': 'xy'}]],
+    #                     subplot_titles=('Title1 1', 'Title 2'))
 
     fig = px.choropleth(locations=states, locationmode="USA-states", scope='usa', color=colors)
     # fig.add_scatter(x=[20, 30, 40], y=[50, 60, 70])
