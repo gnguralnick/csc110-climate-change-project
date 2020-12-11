@@ -6,11 +6,6 @@ from typing import Dict
 import pandas as pd
 
 
-
-        return {int(row[0]): TemperatureData(int(row[0]), float(row[1]), float(row[2]))
-                for row in reader}
-
-
 def import_as_dataframe(filepath: str) -> pd.DataFrame:
     """Return a dataframe representing the temperature data, containing the year as the first
     day in the year, and the raw and smoothed data points.
