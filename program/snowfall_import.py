@@ -34,20 +34,9 @@ def df_snow(filepath: str, parameters: List[str]) -> pd.DataFrame:
     return df_import
 
 
-# def agg_years_mean(df: pd.DataFrame) -> pd.DataFrame:
-#     """This function aggregates the snowfall data into yearly averages for each region.
-#
-#     Preconditions:
-#         - df.empty == False
-#         - "Region" in df.columns
-#         - "Year" in df.columns
-#         - "RSI" in df.columns
-#     """
-#     return df.groupby(['Year', 'Region'], as_index=False)[['RSI']].mean()
-
-
 def agg_years(df: pd.DataFrame, method: callable) -> pd.DataFrame:
-    """This function aggregates the snowfall data into yearly averages for each region.
+    """This function aggregates the snowfall data by year and region, given a method of
+    DataFrameGroupBy.
 
     Preconditions:
         - df.empty == False
