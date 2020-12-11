@@ -26,13 +26,13 @@ def run_choropleth() -> None:
     original_snowfall_data = si.df_snow(
         './data/snowfall/regional-snowfall-index_c20191218.csv',
         ['Region', 'Year', 'RSI'])
-    aggregated_snowfall_data = si.agg_years(original_snowfall_data,
+    no_national_snowfall_data = si.remove_national(original_snowfall_data)
+    aggregated_snowfall_data = si.agg_years(no_national_snowfall_data,
                                             pd.core.groupby.generic.DataFrameGroupBy.sum)
-    unnational_snowfall_data = aggregated_snowfall_data.query('Region != "National"')
-    stateified_snowfall_data = si.regions_to_states(unnational_snowfall_data)
+    states_snowfall_data = si.regions_to_states(aggregated_snowfall_data)
     temperature_data = ti.df_temp(
         './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
-    vis.show_animated_choropleth(stateified_snowfall_data, temperature_data)
+    vis.show_animated_choropleth(states_snowfall_data, temperature_data)
 
 
 if __name__ == '__main__':
