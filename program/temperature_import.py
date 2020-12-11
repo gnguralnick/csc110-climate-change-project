@@ -5,7 +5,7 @@ from os import path
 import pandas as pd
 
 
-def import_as_dataframe(filepath: str) -> pd.DataFrame:
+def df_temp(filepath: str) -> pd.DataFrame:
     """Return a dataframe representing the temperature data, containing the year as the first
     day in the year, and the raw and smoothed data points.
 
@@ -14,7 +14,7 @@ def import_as_dataframe(filepath: str) -> pd.DataFrame:
         - os.path.splitext(filepath)[1] == '.csv'
 
     >>> path = '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
-    >>> df = import_as_dataframe(path)
+    >>> df = df_temp(path)
     >>> dict(df.iloc[88])
     {'year': 1968.0, 'raw': -0.08, 'smoothed': -0.03}
     """

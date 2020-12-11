@@ -14,7 +14,7 @@ def run() -> None:
         'data/snowfall/regional-snowfall-index_c20191218.csv',
         snow_params
         )
-    temp_data = ti.import_as_dataframe(
+    temp_data = ti.df_temp(
         'data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
     )
     vis.initialize_heatmap(temp_data, snow_data)
@@ -30,7 +30,7 @@ def run_choropleth() -> None:
                                             pd.core.groupby.generic.DataFrameGroupBy.sum)
     unnational_snowfall_data = aggregated_snowfall_data.query('Region != "National"')
     stateified_snowfall_data = si.regions_to_states(unnational_snowfall_data)
-    temperature_data = ti.import_as_dataframe(
+    temperature_data = ti.df_temp(
         './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
     vis.show_animated_choropleth(stateified_snowfall_data, temperature_data)
 
