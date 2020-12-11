@@ -8,19 +8,10 @@ from program import visualize as vis
 import pandas as pd
 
 
-def run() -> None:
-    snow_params = ['Region', 'Start', 'End', 'RSI', 'Category']
+def run_all_default() -> None:
+    run_choropleth([0, 10])
+    run_comparison_scatterplot([0, 2])
 
-    snow_data = si.df_snow(
-        'data/snowfall/regional-snowfall-index_c20191218.csv',
-        snow_params
-        )
-    temp_data = ti.df_temp(
-        'data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
-    )
-    vis.initialize_heatmap(temp_data, snow_data)
-    while True:
-        pass
 
 def run_choropleth(rsi_color_scale_range: List[float]) -> None:
     original_snowfall_data = si.df_snow(
