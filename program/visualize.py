@@ -76,6 +76,21 @@ def show_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFram
         )
         swatch_index += 1
 
+    snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
+    snowfall_mean_trendline = process.lowess_smooth(snowfall_mean, 'RSI')
+
+    print(snowfall_mean_trendline)
+
+    fig.add_trace(
+        go.Scatter(x=snowfall_mean_trendline['Year'],
+                   y=snowfall_mean_trendline['RSI'],
+                   name='Overall Mean Trendline', mode='lines',
+                   line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+        secondary_y=False
+    )
+
+    swatch_index += 1
+
     fig.add_trace(
         go.Scatter(x=temperature['Year'], y=temperature['Raw'], name='Temperature',
                    mode='markers',
