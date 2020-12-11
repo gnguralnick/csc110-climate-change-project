@@ -64,16 +64,19 @@ def import_as_dataframe(filepath: str) -> pd.DataFrame:
 
 if __name__ == '__main__':
     import python_ta
+
     python_ta.check_all(config={
-        'extra-imports': ['csv', 'os', 'dataclasses', 'datetime', 'python_ta.contracts', 'pandas'],
+        'extra-imports': ['csv', 'os', 'dataclasses', 'python_ta.contracts', 'pandas'],
         'allowed-io': ['import_as_dict'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })
 
     import python_ta.contracts
+
     python_ta.contracts.DEBUG_CONTRACTS = False
     python_ta.contracts.check_all_contracts()
 
     import doctest
+
     doctest.testmod(verbose=True)

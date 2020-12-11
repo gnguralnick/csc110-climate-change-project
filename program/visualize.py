@@ -1,8 +1,8 @@
 """CSC110 Project -- Visualizing Data"""
 
-import temperature_import
 import pandas as pd
 import plotly.express as px
+import temperature_import
 import process
 
 SAMPLE_SNOWFALL_DATAFRAME = pd.DataFrame({'State': ['PA', 'PA', 'PA', 'PA', 'PA', 'NY', 'NY', 'NY',
@@ -38,14 +38,31 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) 
                         range_color=(0, max_rsi), title=title)
 
     for step in fig['layout']['sliders'][0]['steps']:
-        step['label'] = step['label'] + ', '\
-                        + str(temperature.query('Year == ' + step['label']).iloc[0]['Raw'])
+        step['label'] = step['label'] + ', ' + str(
+            temperature.query('Year == ' + step['label']).iloc[0]['Raw'])
 
     fig.show()
 
 
-
-
 if __name__ == '__main__':
+    import python_ta
+
+    python_ta.check_all(config={
+        'extra-imports': ['python_ta.contracts', 'pandas', 'plotly.express', 'temperature_import',
+                          'process'],
+        'allowed-io': ['import_as_dict'],
+        'max-line-length': 100,
+        'disable': ['R1705', 'C0200']
+    })
+
+    import python_ta.contracts
+
+    python_ta.contracts.DEBUG_CONTRACTS = False
+    python_ta.contracts.check_all_contracts()
+
+    import doctest
+
+    doctest.testmod(verbose=True)
+
     show_animated_choropleth(SAMPLE_SNOWFALL_DATAFRAME, temperature_import.import_as_dataframe(
         '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'))
