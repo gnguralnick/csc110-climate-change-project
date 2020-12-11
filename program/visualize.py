@@ -14,7 +14,7 @@ REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', '
 
 
 def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> None:
-    """Show animated choropleth of snowfall vs temperature over time.
+    """Show an animated choropleth of snowfall vs temperature over time.
     """
     intersecting_years = process.intersecting_years([snowfall, temperature])
     snowfall, temperature = intersecting_years[0], intersecting_years[1]

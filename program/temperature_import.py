@@ -6,17 +6,29 @@ import pandas as pd
 
 
 def df_temp(filepath: str) -> pd.DataFrame:
-    """Return a dataframe representing the temperature data, containing the year as the first
-    day in the year, and the raw and smoothed data points.
+    """Given a filepath referring to a .csv file with the correct format, return a dataframe
+    representing the temperature data, containing year, raw, and smoothed data columns.
 
     Preconditions:
         - path.exists(filepath)
         - os.path.splitext(filepath)[1] == '.csv'
 
     >>> path = '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
-    >>> df = df_temp(path)
-    >>> dict(df.iloc[88])
-    {'year': 1968.0, 'raw': -0.08, 'smoothed': -0.03}
+    >>> df_temp(path)
+         Year   Raw  Smoothed
+    0    1880 -0.15     -0.08
+    1    1881 -0.07     -0.12
+    2    1882 -0.10     -0.15
+    3    1883 -0.16     -0.19
+    4    1884 -0.27     -0.23
+    ..    ...   ...       ...
+    135  2015  0.90      0.83
+    136  2016  1.02      0.87
+    137  2017  0.93      0.91
+    138  2018  0.85      0.95
+    139  2019  0.99      0.99
+    <BLANKLINE>
+    [140 rows x 3 columns]
     """
     return pd.read_csv(filepath, header=0,
                        names=['Year', 'Raw', 'Smoothed'])
