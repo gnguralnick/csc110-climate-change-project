@@ -58,21 +58,3 @@ if __name__ == '__main__':
     import doctest
 
     doctest.testmod(verbose=True)
-
-    original_snowfall_data = snowfall_import.df_snow(
-        '../data/snowfall/regional-snowfall-index_c20191218.csv',
-        ['Region', 'Year', 'RSI'])
-    print(original_snowfall_data)
-    aggregated_snowfall_data = snowfall_import.agg_years(original_snowfall_data,
-                                                         pd.core.groupby.generic.DataFrameGroupBy.sum)
-    # aggregated_snowfall_data = snowfall_import.agg_years_mean(original_snowfall_data)
-    # aggregated_snowfall_data = snowfall_import.agg_years_sum(original_snowfall_data)
-    print(aggregated_snowfall_data)
-    unnational_snowfall_data = aggregated_snowfall_data.query('Region != "National"')
-    print(unnational_snowfall_data)
-    stateified_snowfall_data = snowfall_import.stateify_data(unnational_snowfall_data)
-    print(stateified_snowfall_data)
-    temperature_data = temperature_import.import_as_dataframe(
-        '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
-    print(temperature_data)
-    show_animated_choropleth(stateified_snowfall_data, temperature_data)
