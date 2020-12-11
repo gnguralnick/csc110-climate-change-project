@@ -31,7 +31,7 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) 
                         color='RSI', range_color=(0, max_rsi), title=title)
 
     for step in fig['layout']['sliders'][0]['steps']:
-        step['label'] = step['label'] + ', ' + str(
+        step['label'] = str(int(float(step['label']))) + ', ' + str(
             temperature.query('Year == ' + step['label']).iloc[0]['Raw'])
 
     fig.show()
