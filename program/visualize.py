@@ -2,8 +2,6 @@
 
 import pandas as pd
 import plotly.express as px
-import temperature_import
-import snowfall_import
 import process
 
 
@@ -43,8 +41,7 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts', 'pandas', 'plotly.express', 'temperature_import',
-                          'process'],
+        'extra-imports': ['python_ta.contracts', 'pandas', 'plotly.express', 'process'],
         'allowed-io': ['import_as_dict'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
