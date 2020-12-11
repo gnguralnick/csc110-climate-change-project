@@ -59,7 +59,7 @@ def agg_years(df: pd.DataFrame, method: callable) -> pd.DataFrame:
     return method(df.groupby(['Year', 'Region'], as_index=False)[['RSI']])
 
 
-def stateify_data(df: pd.DataFrame) -> pd.DataFrame:
+def regions_to_states(df: pd.DataFrame) -> pd.DataFrame:
     stateified_so_far = pd.DataFrame({'State': [], 'Year': [], 'Mean RSI': []})
     for index in range(len(df)):
         for state in REGIONS[df.iloc[index]['Region']]:

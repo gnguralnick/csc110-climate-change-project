@@ -30,7 +30,7 @@ def run_choropleth() -> None:
     aggregated_snowfall_data = si.agg_years(original_snowfall_data,
                                             DataFrameGroupBy.sum)
     unnational_snowfall_data = aggregated_snowfall_data.query('Region != "National"')
-    stateified_snowfall_data = si.stateify_data(unnational_snowfall_data)
+    stateified_snowfall_data = si.regions_to_states(unnational_snowfall_data)
     temperature_data = ti.import_as_dataframe(
         './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
     vis.show_animated_choropleth(stateified_snowfall_data, temperature_data)
