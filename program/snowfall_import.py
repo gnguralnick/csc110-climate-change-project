@@ -1,10 +1,8 @@
+"""CSC110 Project -- Importing Snowfall Data"""
 
 from os import path
-import pandas as pd
-from dataclasses import dataclass
-import math
 from typing import List
-import python_ta
+import pandas as pd
 
 
 REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', 'MD', 'NH'],
