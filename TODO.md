@@ -21,4 +21,5 @@
 - [x] Figure out how to use https://plotly.com/python/mapbox-density-heatmaps/
     - ~~We want to go through the years showing snowfall RSI, with a heat bar/value on the side.~~
     - Determined that the goal above was infeasible and instead showed temperature on the slider values.
-- [ ] Line graph of average totals over time, if we have time after.
+    - [ ] Figure out how to add fade and duration to transitions, if possible.
+- [ ] Line graph of average totals over time, if we have time after?
