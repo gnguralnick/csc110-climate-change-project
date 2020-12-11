@@ -7,13 +7,6 @@ import snowfall_import
 import process
 
 
-SAMPLE_SNOWFALL_DATAFRAME = pd.DataFrame({'State': ['PA', 'PA', 'PA', 'PA', 'PA', 'NY', 'NY', 'NY',
-                                                    'NY', 'NY'],
-                                          'RSI': [2, 3, 4, 5, 6, 4, 5, 6, 7, 8],
-                                          'Year': [2015, 2016, 2017, 2018, 2019, 2015, 2016, 2017,
-                                                   2018, 2019]},
-                                         columns=['State', 'RSI', 'Year'])
-
 REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', 'MD', 'NH'],
            'Northern Rockies and Plains': ['MT', 'ND', 'SD', 'WY', 'NE'],
            'Ohio Valley': ['MO', 'IL', 'TN', 'WV', 'OH', 'IN', 'KY'],
@@ -30,14 +23,14 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) 
 
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
-    max_rsi = snowfall['Mean RSI'].max()
+    max_rsi = snowfall['RSI'].max()
 
     title = 'US Central and Eastern RSI vs. Global Land-Ocean Temperature Index From ' + \
             str(min_year) + ' to ' + str(max_year)
 
     fig = px.choropleth(data_frame=snowfall, locations='State', locationmode="USA-states",
                         scope='usa', animation_frame='Year', animation_group='State',
-                        color='Mean RSI', range_color=(0, 10), title=title)
+                        color='RSI', range_color=(0, max_rsi), title=title)
 
     for step in fig['layout']['sliders'][0]['steps']:
         step['label'] = step['label'] + ', ' + str(
@@ -70,7 +63,10 @@ if __name__ == '__main__':
         '../data/snowfall/regional-snowfall-index_c20191218.csv',
         ['Region', 'Year', 'RSI'])
     print(original_snowfall_data)
-    aggregated_snowfall_data = snowfall_import.agg_years(original_snowfall_data)
+    aggregated_snowfall_data = snowfall_import.agg_years(original_snowfall_data,
+                                                         pd.core.groupby.generic.DataFrameGroupBy.sum)
+    # aggregated_snowfall_data = snowfall_import.agg_years_mean(original_snowfall_data)
+    # aggregated_snowfall_data = snowfall_import.agg_years_sum(original_snowfall_data)
     print(aggregated_snowfall_data)
     unnational_snowfall_data = aggregated_snowfall_data.query('Region != "National"')
     print(unnational_snowfall_data)
