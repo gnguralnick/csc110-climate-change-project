@@ -93,6 +93,14 @@ def show_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFram
 
     fig['layout']['yaxis']['range'] = rsi_axis_range
 
+    fig['layout']['xaxis']['title']['text'] = 'Year'
+    fig['layout']['yaxis']['title']['text'] = 'RSI'
+    fig['layout']['yaxis2']['title']['text'] = 'Degrees Celsius'
+
+    title = 'US Central and Eastern Yearly Mean RSI vs. Global Land-Ocean Temperature Index From ' \
+            + str(int(min_year)) + ' to ' + str(int(max_year))
+    fig['layout']['title']['text'] = title
+
     fig.show()
 
 
