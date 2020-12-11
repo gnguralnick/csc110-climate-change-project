@@ -33,3 +33,23 @@ def run_choropleth() -> None:
     temperature_data = ti.import_as_dataframe(
         './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
     vis.show_animated_choropleth(stateified_snowfall_data, temperature_data)
+
+
+if __name__ == '__main__':
+    # import python_ta
+    #
+    # python_ta.check_all(config={
+    #     'extra-imports': ['csv', 'os', 'dataclasses', 'python_ta.contracts', 'pandas'],
+    #     'allowed-io': ['import_as_dict'],
+    #     'max-line-length': 100,
+    #     'disable': ['R1705', 'C0200']
+    # })
+
+    import python_ta.contracts
+
+    python_ta.contracts.DEBUG_CONTRACTS = False
+    python_ta.contracts.check_all_contracts()
+
+    import doctest
+
+    doctest.testmod(verbose=True)
