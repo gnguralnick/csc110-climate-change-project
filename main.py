@@ -1,6 +1,7 @@
 """CSC110 Project -- US Snowfall vs. Global Land-Ocean Temperature Index"""
 
 import program
+from typing import List
 from program import snowfall_import as si
 from program import temperature_import as ti
 from program import visualize as vis
@@ -33,6 +34,18 @@ def run_choropleth() -> None:
     temperature_data = ti.df_temp(
         './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
     vis.show_animated_choropleth(states_snowfall_data, temperature_data)
+
+
+def run_comparison_scatterplot(rsi_axis_range: List[float]) -> None:
+    original_snowfall_data = si.df_snow(
+        './data/snowfall/regional-snowfall-index_c20191218.csv',
+        ['Region', 'Year', 'RSI'])
+    no_national_snowfall_data = si.remove_national(original_snowfall_data)
+    aggregated_snowfall_data = si.agg_years(no_national_snowfall_data,
+                                            pd.core.groupby.generic.DataFrameGroupBy.mean)
+    temperature_data = ti.df_temp(
+        './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
+    vis.show_comparison_scatterplot(aggregated_snowfall_data, temperature_data, rsi_axis_range)
 
 
 if __name__ == '__main__':

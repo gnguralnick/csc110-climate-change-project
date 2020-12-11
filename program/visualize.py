@@ -1,7 +1,10 @@
 """CSC110 Project -- Visualizing Data"""
 
+from typing import List
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import process
 
 
@@ -35,6 +38,53 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) 
     for step in fig['layout']['sliders'][0]['steps']:
         step['label'] = str(int(float(step['label']))) + ', ' + str(
             temperature.query('Year == ' + step['label']).iloc[0]['Raw'])
+
+    fig.show()
+
+
+def show_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
+                                rsi_axis_range: List[float]) -> None:
+    intersecting_years = process.intersecting_years([snowfall, temperature])
+    snowfall, temperature = intersecting_years[0], intersecting_years[1]
+
+    fig = make_subplots(specs=[[{'secondary_y': True}]])
+
+    swatch_index = 0
+
+    for region in snowfall['Region'].drop_duplicates():
+        fig.add_trace(
+            go.Scatter(x=snowfall.query('Region == "' + region + '"')['Year'],
+                       y=snowfall.query('Region == "' + region + '"')['RSI'],
+                       name=region, mode='markers',
+                       line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+            secondary_y=False
+        )
+        trendline = process.lowess_smooth(snowfall.query('Region == "' + region + '"'), 'RSI')
+        fig.add_trace(
+            go.Scatter(x=trendline['Year'],
+                       y=trendline['RSI'],
+                       name=region + ' Trendline', mode='lines',
+                       line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+            secondary_y=False
+        )
+        swatch_index += 1
+
+    fig.add_trace(
+        go.Scatter(x=temperature['Year'], y=temperature['Raw'], name='Temperature',
+                   mode='markers',
+                   line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+    secondary_y=True
+    )
+    temperature_trendline = process.lowess_smooth(temperature, 'Raw')
+    fig.add_trace(
+        go.Scatter(x=temperature_trendline['Year'],
+                   y=temperature_trendline['Raw'],
+                   name='Temperature Trendline', mode='lines',
+                   line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+    secondary_y=True
+    )
+
+    fig['layout']['yaxis']['range'] = rsi_axis_range
 
     fig.show()
 
