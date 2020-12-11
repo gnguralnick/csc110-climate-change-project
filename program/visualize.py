@@ -5,6 +5,7 @@ import plotly.express as px
 import temperature_import
 import process
 
+
 SAMPLE_SNOWFALL_DATAFRAME = pd.DataFrame({'State': ['PA', 'PA', 'PA', 'PA', 'PA', 'NY', 'NY', 'NY',
                                                     'NY', 'NY'],
                                           'RSI': [2, 3, 4, 5, 6, 4, 5, 6, 7, 8],
