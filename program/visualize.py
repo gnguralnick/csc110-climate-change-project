@@ -24,11 +24,13 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) 
     max_rsi = snowfall['RSI'].max()
 
     title = 'US Central and Eastern RSI vs. Global Land-Ocean Temperature Index From ' + \
-            str(min_year) + ' to ' + str(max_year)
+            str(int(min_year)) + ' to ' + str(int(max_year))
 
     fig = px.choropleth(data_frame=snowfall, locations='State', locationmode="USA-states",
                         scope='usa', animation_frame='Year', animation_group='State',
                         color='RSI', range_color=(0, max_rsi), title=title)
+
+    fig['layout']['sliders'][0]['currentvalue']['prefix'] = 'Year, Temp='
 
     for step in fig['layout']['sliders'][0]['steps']:
         step['label'] = str(int(float(step['label']))) + ', ' + str(
