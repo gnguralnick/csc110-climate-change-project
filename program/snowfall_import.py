@@ -34,6 +34,22 @@ def df_snow(filepath: str, parameters: List[str]) -> pd.DataFrame:
     return df_import
 
 
+def remove_national(df: pd.DataFrame) -> pd.DataFrame:
+    """Remove columns where 'Region' == National.
+
+    Preconditions
+        - df.empty == False
+        - 'Region' in df.columns
+
+    >>> data = {'Region': ['National', 'South'], 'Year': [2001, 2001], 'RSI': [3.0, 2.15]}
+    >>> df = pd.DataFrame(data)
+    >>> remove_national(df)
+      Region  Year   RSI
+    1  South  2001  2.15
+    """
+    return df.query('Region != "National"')
+
+
 def agg_years(df: pd.DataFrame, method: callable) -> pd.DataFrame:
     """This function aggregates the snowfall data by year and region, given a method of
     DataFrameGroupBy.
