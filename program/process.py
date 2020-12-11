@@ -2,6 +2,7 @@
 
 from typing import List
 import pandas as pd
+import statsmodels.api as sm
 
 
 def intersecting_years(df_list: List[pd.DataFrame]) -> List[pd.DataFrame]:
@@ -28,11 +29,26 @@ def intersecting_years(df_list: List[pd.DataFrame]) -> List[pd.DataFrame]:
     return [df.query(str(upper_bound) + ' >= Year >= ' + str(lower_bound)) for df in df_list]
 
 
+def lowess_smooth(df: pd.DataFrame, data: str) -> pd.DataFrame:
+    """Given a DataFrame containing a 'Year' column and column with the name of the data input,
+    return a lowess smoothed DataFrame with only the year and the smoothed data.
+
+    Preconditions:
+        - df.empty == False
+        - 'Year' in df.columns
+        - data in df.columns
+    """
+    return pd.DataFrame(sm.nonparametric.lowess(
+        endog=df[data],
+        exog=df['Year']
+    ), columns=['Year', data])
+
+
 if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts', 'pandas'],
+        'extra-imports': ['python_ta.contracts', 'pandas', 'statsmodels'],
         'allowed-io': ['import_as_dict'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
