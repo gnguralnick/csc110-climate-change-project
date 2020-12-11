@@ -12,6 +12,7 @@ def import_as_dataframe(filepath: str) -> pd.DataFrame:
 
     Preconditions:
         - path.exists(filepath)
+        - os.path.splitext(filepath)[1] == '.csv'
 
     >>> path = '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
     >>> df = import_as_dataframe(path)

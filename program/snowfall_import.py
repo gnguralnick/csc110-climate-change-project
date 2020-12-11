@@ -18,6 +18,7 @@ def df_snow(filepath: str, parameters: List[str]) -> pd.DataFrame:
     This function returns a dataframe containing the given parameters from the given csv file.
     Preconditions:
         - path.exists(filepath)
+        - os.path.splitext(filepath)[1] == '.csv'
         -
         - len(parameters) >= 1
 
@@ -53,6 +54,7 @@ def agg_years(df: pd.DataFrame, method: callable) -> pd.DataFrame:
         - "Region" in df.columns
         - "Year" in df.columns
         - "RSI" in df.columns
+        - hasattr(pd.core.groupby.generic.DataFrameGroupBy, method.__name__)
     """
     return method(df.groupby(['Year', 'Region'], as_index=False)[['RSI']])
 
