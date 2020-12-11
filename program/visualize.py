@@ -14,7 +14,6 @@ SAMPLE_SNOWFALL_DATAFRAME = pd.DataFrame({'State': ['PA', 'PA', 'PA', 'PA', 'PA'
                                                    2018, 2019]},
                                          columns=['State', 'RSI', 'Year'])
 
-
 REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', 'MD', 'NH'],
            'Northern Rockies and Plains': ['MT', 'ND', 'SD', 'WY', 'NE'],
            'Ohio Valley': ['MO', 'IL', 'TN', 'WV', 'OH', 'IN', 'KY'],
@@ -66,4 +65,5 @@ def show_animated_df(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> None:
     fig.show()
 
 
-show_animated_df(SAMPLE_SNOWFALL_DATAFRAME, temperature_import.import_as_dataframe('../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'))
+if __name__ == '__main__':
+    show_animated_df(SAMPLE_SNOWFALL_DATAFRAME, temperature_import.import_as_dataframe('../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'))
