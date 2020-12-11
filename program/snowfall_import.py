@@ -7,6 +7,14 @@ from typing import List
 import python_ta
 
 
+REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', 'MD', 'NH'],
+           'Northern Rockies and Plains': ['MT', 'ND', 'SD', 'WY', 'NE'],
+           'Ohio Valley': ['MO', 'IL', 'TN', 'WV', 'OH', 'IN', 'KY'],
+           'South': ['KS', 'OK', 'MS', 'TX', 'AR', 'LA'],
+           'Southeast': ['VA', 'NC', 'SC', 'AL', 'GA', 'FL'],
+           'Upper Midwest': ['MN', 'IA', 'WI', 'MI']}
+
+
 def df_snow(filepath: str, parameters: List[str]) -> pd.DataFrame:
     """
     This function returns a dataframe containing the given parameters from the given csv file.
@@ -36,9 +44,42 @@ def agg_years(df: pd.DataFrame) -> pd.DataFrame:
         - "Year" in df.columns
         - "RSI" in df.columns
     """
-    agg_df = df.groupby(["Region", "Year"]).agg({"RSI": ['mean']}).reset_index()
+    # agg_df = df.groupby(["Region", "Year"]).agg(['mean']).reset_index()
+    # agg_df['RSI'] = agg_df['RSI']['mean']
+    #
+    # return agg_df
+    regions = set(df['Region'])
+    years = set(df['Year'])
+    region_list = []
+    [region_list.extend(regions) for year in years]
+    year_list = []
+    [year_list.extend([year] * len(regions)) for year in years]
+    print(region_list)
+    print(year_list)
+    mean_list = [df.query('Year == ' + str(year) + ' and Region == "' + str(region) + '"')[
+                     'RSI'].mean()
+                 for region in regions for year in years]
+    print(mean_list)
+    return pd.DataFrame({'Region': region_list, 'Year': year_list, 'Mean RSI': mean_list})
 
-    return agg_df
+
+def stateify_data(df: pd.DataFrame) -> pd.DataFrame:
+    stateified_so_far = pd.DataFrame({'State': [], 'Year': [], 'Mean RSI': []})
+    # [[stateified = stateified.append(pd.DataFrame({'State': [state],
+    #                                                'Year': [df.iloc[index]['Year']],
+    #                                                'Mean RSI': [df.iloc[index]['Mean RSI']]}))
+    # for state in REGIONS[df.iloc[index]['Region']]] for index in range(len(df))]
+    for index in range(len(df)):
+        for state in REGIONS[df.iloc[index]['Region']]:
+            stateified_so_far = stateified_so_far.append(
+                pd.DataFrame({'State': [state], 'Year': [df.iloc[index]['Year']],
+                              'Mean RSI': [df.iloc[index]['Mean RSI']]}))
+    return stateified_so_far
+
+
+
+
+
 
 
 # python_ta.check_all(config={

@@ -3,6 +3,7 @@
 import pandas as pd
 import plotly.express as px
 import temperature_import
+import snowfall_import
 import process
 
 
@@ -27,16 +28,16 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) 
     intersecting_years = process.intersecting_years([snowfall, temperature])
     snowfall, temperature = intersecting_years[0], intersecting_years[1]
 
-    min_year = min(snowfall['Year'])
-    max_year = max(snowfall['Year'])
-    max_rsi = max(snowfall['RSI'])
+    min_year = snowfall['Year'].min()
+    max_year = snowfall['Year'].max()
+    max_rsi = snowfall['Mean RSI'].max()
 
     title = 'US Central and Eastern RSI vs. Global Land-Ocean Temperature Index From ' + \
             str(min_year) + ' to ' + str(max_year)
 
     fig = px.choropleth(data_frame=snowfall, locations='State', locationmode="USA-states",
-                        scope='usa', animation_frame='Year', animation_group='State', color='RSI',
-                        range_color=(0, max_rsi), title=title)
+                        scope='usa', animation_frame='Year', animation_group='State',
+                        color='Mean RSI', range_color=(0, 10), title=title)
 
     for step in fig['layout']['sliders'][0]['steps']:
         step['label'] = step['label'] + ', ' + str(
@@ -65,5 +66,17 @@ if __name__ == '__main__':
 
     doctest.testmod(verbose=True)
 
-    show_animated_choropleth(SAMPLE_SNOWFALL_DATAFRAME, temperature_import.import_as_dataframe(
-        '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'))
+    original_snowfall_data = snowfall_import.df_snow(
+        '../data/snowfall/regional-snowfall-index_c20191218.csv',
+        ['Region', 'Year', 'RSI'])
+    print(original_snowfall_data)
+    aggregated_snowfall_data = snowfall_import.agg_years(original_snowfall_data)
+    print(aggregated_snowfall_data)
+    unnational_snowfall_data = aggregated_snowfall_data.query('Region != "National"')
+    print(unnational_snowfall_data)
+    stateified_snowfall_data = snowfall_import.stateify_data(unnational_snowfall_data)
+    print(stateified_snowfall_data)
+    temperature_data = temperature_import.import_as_dataframe(
+        '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
+    print(temperature_data)
+    show_animated_choropleth(stateified_snowfall_data, temperature_data)
