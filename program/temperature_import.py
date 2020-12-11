@@ -54,12 +54,12 @@ def import_as_dataframe(filepath: str) -> pd.DataFrame:
         - path.exists(filepath)
 
     >>> path = '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
-    >>> df = import_as_dataframe(PATH)
+    >>> df = import_as_dataframe(path)
     >>> dict(df.iloc[88])
     {'year': 1968.0, 'raw': -0.08, 'smoothed': -0.03}
     """
     return pd.read_csv(filepath, header=0,
-                       names=['year', 'raw', 'smoothed'])
+                       names=['Year', 'Raw', 'Smoothed'])
 
 
 if __name__ == '__main__':
