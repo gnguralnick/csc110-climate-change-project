@@ -16,7 +16,8 @@ REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', '
            'Upper Midwest': ['MN', 'IA', 'WI', 'MI']}
 
 
-def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> None:
+def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
+                             rsi_color_scale_range: List[float]) -> None:
     """Show an animated choropleth of snowfall vs temperature over time.
     """
     intersecting_years = process.intersecting_years([snowfall, temperature])
@@ -24,14 +25,14 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) 
 
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
-    max_rsi = snowfall['RSI'].max()
 
-    title = 'US Central and Eastern RSI vs. Global Land-Ocean Temperature Index From ' + \
-            str(int(min_year)) + ' to ' + str(int(max_year))
+    title = 'US Central and Eastern Yearly Mean RSI vs. Global Land-Ocean Temperature Index From '\
+            + str(int(min_year)) + ' to ' + str(int(max_year))
 
     fig = px.choropleth(data_frame=snowfall, locations='State', locationmode="USA-states",
                         scope='usa', animation_frame='Year', animation_group='State',
-                        color='RSI', range_color=(0, max_rsi), title=title)
+                        color='RSI', range_color=rsi_color_scale_range, title=title,
+                        labels={'Region': 'Region'})
 
     fig['layout']['sliders'][0]['currentvalue']['prefix'] = 'Year, Temp='
 
@@ -44,8 +45,14 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) 
 
 def show_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                                 rsi_axis_range: List[float]) -> None:
+    """Show a scatterplot with lowess trendlines for each individual region, the average of the
+    regions, and the temperature.
+    """
     intersecting_years = process.intersecting_years([snowfall, temperature])
     snowfall, temperature = intersecting_years[0], intersecting_years[1]
+
+    min_year = snowfall['Year'].min()
+    max_year = snowfall['Year'].max()
 
     fig = make_subplots(specs=[[{'secondary_y': True}]])
 
@@ -73,7 +80,7 @@ def show_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFram
         go.Scatter(x=temperature['Year'], y=temperature['Raw'], name='Temperature',
                    mode='markers',
                    line={'color': px.colors.qualitative.Plotly[swatch_index]}),
-    secondary_y=True
+        secondary_y=True
     )
     temperature_trendline = process.lowess_smooth(temperature, 'Raw')
     fig.add_trace(
@@ -81,7 +88,7 @@ def show_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFram
                    y=temperature_trendline['Raw'],
                    name='Temperature Trendline', mode='lines',
                    line={'color': px.colors.qualitative.Plotly[swatch_index]}),
-    secondary_y=True
+        secondary_y=True
     )
 
     fig['layout']['yaxis']['range'] = rsi_axis_range
