@@ -1,11 +1,9 @@
-"""CSC110 Project -- Processing Data"""
+"""CSC110 Project -- Visualizing Data"""
 
 import temperature_import
-import datetime
 import pandas as pd
-from plotly.subplots import make_subplots
 import plotly.express as px
-import plotly.graph_objects as go
+import process
 
 SAMPLE_SNOWFALL_DATAFRAME = pd.DataFrame({'State': ['PA', 'PA', 'PA', 'PA', 'PA', 'NY', 'NY', 'NY',
                                                     'NY', 'NY'],
@@ -22,34 +20,15 @@ REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', '
            'Upper Midwest': ['MN', 'IA', 'WI', 'MI']}
 
 
-def show_animated_df(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> None:
-    """Show animated dataframe of snowfall.
+def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> None:
+    """Show animated choropleth of snowfall vs temperature over time.
     """
-    min_snowfall_year = min(snowfall['Year'])
-    max_snowfall_year = max(snowfall['Year'])
+    intersecting_years = process.intersecting_years([snowfall, temperature])
+    snowfall, temperature = intersecting_years[0], intersecting_years[1]
 
-    min_temperature_year = min(temperature['Year'])
-    max_temperature_year = max(temperature['Year'])
-
+    min_year = min(snowfall['Year'])
+    max_year = max(snowfall['Year'])
     max_rsi = max(snowfall['RSI'])
-
-    if max_snowfall_year > max_temperature_year:
-        snowfall = snowfall.query('Year <= ' + str(max_temperature_year))
-        max_year = max_temperature_year
-    elif max_snowfall_year < max_temperature_year:
-        temperature = temperature.query('Year <= ' + str(max_snowfall_year))
-        max_year = max_snowfall_year
-    else:
-        max_year = max_temperature_year
-
-    if min_snowfall_year < min_temperature_year:
-        snowfall = snowfall.query('Year >= ' + str(min_temperature_year))
-        min_year = min_temperature_year
-    elif min_snowfall_year > min_temperature_year:
-        temperature = temperature.query('Year >= ' + str(min_snowfall_year))
-        min_year = min_snowfall_year
-    else:
-        min_year = min_temperature_year
 
     title = 'US Central and Eastern RSI vs. Global Land-Ocean Temperature Index From ' + \
             str(min_year) + ' to ' + str(max_year)
@@ -65,5 +44,8 @@ def show_animated_df(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> None:
     fig.show()
 
 
+
+
 if __name__ == '__main__':
-    show_animated_df(SAMPLE_SNOWFALL_DATAFRAME, temperature_import.import_as_dataframe('../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'))
+    show_animated_choropleth(SAMPLE_SNOWFALL_DATAFRAME, temperature_import.import_as_dataframe(
+        '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'))
