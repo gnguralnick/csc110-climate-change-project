@@ -4,7 +4,7 @@ from typing import List
 import snowfall_import as si
 import temperature_import as ti
 import visualize as vis
-import process
+import process as ps
 import pandas as pd
 
 
@@ -26,7 +26,7 @@ def import_datasets() -> List[pd.DataFrame]:
 
     temperature_data = ti.df_temp(
         './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
-    return process.common_years([aggregated_snowfall_data, temperature_data])
+    return ps.common_years([aggregated_snowfall_data, temperature_data])
 
 
 def run_choropleth(rsi_color_scale_range: List[float], snowfall_data: pd.DataFrame, temp_data: pd.DataFrame) -> None:
