@@ -12,8 +12,8 @@ The snowfall data was obtained from the NCEI, specifically at [this link](https:
 
 ### Year Comparison Scatterplot
 
-![Year Comparison Scatterplot Preview](./previews/year_comparison_scatterplot.png)
+![Year Comparison Scatterplot Preview](./previews/year_comparison_scatter_plot.png)
 
 ### Correlation Scatterplot
 
-![Correlation Scatterplot Preview](./previews/correlation_scatterplot.png)
+![Correlation Scatterplot Preview](./previews/correlation_scatter_plot.png)
