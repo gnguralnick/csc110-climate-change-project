@@ -79,8 +79,6 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
     snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
     snowfall_mean_trendline = process.lowess_smooth(snowfall_mean, 'RSI')
 
-    print(snowfall_mean_trendline)
-
     fig.add_trace(
         go.Scatter(x=snowfall_mean_trendline['Year'],
                    y=snowfall_mean_trendline['RSI'],
