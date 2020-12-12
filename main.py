@@ -36,7 +36,19 @@ def run_year_comparison_scatterplot(rsi_axis_range: List[float]) -> None:
                                             pd.core.groupby.generic.DataFrameGroupBy.mean)
     temperature_data = ti.df_temp(
         './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
-    vis.show_comparison_scatterplot(aggregated_snowfall_data, temperature_data, rsi_axis_range)
+    vis.show_year_comparison_scatterplot(aggregated_snowfall_data, temperature_data, rsi_axis_range)
+
+
+def run_correlation_scatterplot() -> None:
+    original_snowfall_data = si.df_snow(
+        './data/snowfall/regional-snowfall-index_c20191218.csv',
+        ['Region', 'Year', 'RSI'])
+    no_national_snowfall_data = si.remove_national(original_snowfall_data)
+    aggregated_snowfall_data = si.agg_years(no_national_snowfall_data,
+                                            pd.core.groupby.generic.DataFrameGroupBy.mean)
+    temperature_data = ti.df_temp(
+        './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
+    vis.show_correlation_scatterplot(aggregated_snowfall_data, temperature_data)
 
 
 if __name__ == '__main__':
