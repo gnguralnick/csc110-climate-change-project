@@ -5,9 +5,9 @@ import pandas as pd
 import statsmodels.api as sm
 
 
-def intersecting_years(df_list: List[pd.DataFrame]) -> List[pd.DataFrame]:
-    """Given a list of DataFrames with a continuous 'Year' column, return a list containing the same
-    DataFrames with any years that are not present in the others removed.
+def common_years(df_list: List[pd.DataFrame]) -> List[pd.DataFrame]:
+    """Given a list of DataFrames with a continuous or discontinuous 'Year' columns, return a list
+    containing the same DataFrames with any years that are not present in the others removed.
 
     Preconditions:
         - df.empty == False
@@ -17,16 +17,23 @@ def intersecting_years(df_list: List[pd.DataFrame]) -> List[pd.DataFrame]:
     >>> data2 = {'Year': [2001, 2002], 'Raw': [0.5, 0.8], 'Smoothed': [0.5, 0.7]}
     >>> df1 = pd.DataFrame(data1)
     >>> df2 = pd.DataFrame(data2)
-    >>> intersecting_years([df1, df2])
+    >>> common_years([df1, df2])
     [     Region  Year   RSI
     0  National  2001  3.00
     1     South  2001  2.15,    Year  Raw  Smoothed
     0  2001  0.5       0.5]
     """
-    upper_bound = min(max(df['Year']) for df in df_list)
-    lower_bound = max(min(df['Year']) for df in df_list)
+    years_so_far = set(df_list[0]['Year'])
+    for i in range(1, len(df_list)):
+        years_so_far = years_so_far.intersection(set(df_list[i]['Year']))
 
-    return [df.query(str(upper_bound) + ' >= Year >= ' + str(lower_bound)) for df in df_list]
+    years_so_far = years_so_far.difference({1991})
+
+    query_so_far = ''
+    for year in years_so_far:
+        query_so_far += 'Year == ' + str(year) + ' or '
+
+    return [df.query(query_so_far[0:-4]) for df in df_list]
 
 
 def lowess_smooth(df: pd.DataFrame, data: str) -> pd.DataFrame:
