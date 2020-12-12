@@ -51,6 +51,13 @@ def lowess_smooth(df: pd.DataFrame, data: str) -> pd.DataFrame:
     ), columns=['Year', data])
 
 
+def add_year_temps(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> pd.DataFrame:
+    conversion_dict = dict(zip(temperature['Year'], temperature['Raw']))
+    return snowfall.assign(temperature=[
+        conversion_dict[row['Year']]
+        for row in snowfall.iloc]).rename(columns={'temperature': 'Temperature'})
+
+
 if __name__ == '__main__':
     import python_ta
 
