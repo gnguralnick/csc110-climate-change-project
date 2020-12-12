@@ -26,8 +26,8 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
 
-    title = 'US Central and Eastern Yearly Mean RSI vs. Global Land-Ocean Temperature Index From '\
-            + str(int(min_year)) + ' to ' + str(int(max_year))
+    title = 'US Central and Eastern Yearly Mean RSI by Region vs. Global Land-Ocean Temperature ' \
+            'Index From ' + str(int(min_year)) + ' to ' + str(int(max_year))
 
     fig = px.choropleth(data_frame=snowfall, locations='State', locationmode="USA-states",
                         scope='usa', animation_frame='Year', animation_group='State',
@@ -115,7 +115,7 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
     fig['layout']['yaxis']['title']['text'] = 'RSI'
     fig['layout']['yaxis2']['title']['text'] = 'Degrees Celsius'
 
-    title = 'US Central and Eastern Yearly Mean RSI vs. Global Land-Ocean Temperature Index From ' \
+    title = 'US Central and Eastern Yearly Mean RSI and Global Land-Ocean Temperature Index From ' \
             + str(int(min_year)) + ' to ' + str(int(max_year))
     fig['layout']['title']['text'] = title
 
@@ -133,6 +133,9 @@ def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFra
     snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
 
     data = process.add_year_temps(snowfall_mean, temperature)
+
+    title = 'US Central and Eastern Yearly Mean RSI vs. Global Land-Ocean Temperature Index From ' \
+            + str(int(min_year)) + ' to ' + str(int(max_year))
 
     fig = px.scatter(data, x='Temperature', y='RSI', trendline=trendline, title=title)
 
