@@ -21,7 +21,7 @@ def df_snow(filepath: str, parameters: List[str]) -> pd.DataFrame:
         - os.path.splitext(filepath)[1] == '.csv'
         - len(parameters) >= 1
 
-    >>> path = '../data/snowfall/regional-snowfall-index_c20191218.csv'
+    >>> path = 'data/snowfall/regional-snowfall-index_c20191218.csv'
     >>> df_snow(path, ['Region', 'Year', 'RSI'])
                                Region     RSI  Year
     0                        National   0.000  2019

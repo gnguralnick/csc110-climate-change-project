@@ -13,7 +13,7 @@ def df_temp(filepath: str) -> pd.DataFrame:
         - path.exists(filepath)
         - os.path.splitext(filepath)[1] == '.csv'
 
-    >>> path = '../data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
+    >>> path = 'data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
     >>> df_temp(path)
          Year   Raw  Smoothed
     0    1880 -0.15     -0.08

@@ -1,10 +1,10 @@
 """CSC110 Project -- US Snowfall vs. Global Land-Ocean Temperature Index"""
 
 from typing import List
-from program import snowfall_import as si
-from program import temperature_import as ti
-from program import visualize as vis
-from program import process
+import snowfall_import as si
+import temperature_import as ti
+import visualize as vis
+import process
 import pandas as pd
 
 
