@@ -40,9 +40,9 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
     fig.show()
 
 
-def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
+def show_year_comparison_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                                      rsi_axis_range: List[float]) -> None:
-    """Show a scatterplot with lowess trendlines for each individual region, the average of the
+    """Show a scatter plot with lowess trend lines for each individual region, the average of the
     regions, and the temperature.
     """
     min_year = snowfall['Year'].min()
@@ -60,12 +60,12 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
                        line={'color': px.colors.qualitative.Plotly[swatch_index % len(px.colors.qualitative.Plotly)]}),
             secondary_y=False
         )
-        trendline = process.lowess(snowfall.query('Region == "' + region + '"'), 'Year',
+        trend_line = process.lowess(snowfall.query('Region == "' + region + '"'), 'Year',
                                           'RSI')
         fig.add_trace(
-            go.Scatter(x=trendline['Year'],
-                       y=trendline['RSI'],
-                       name=region + ' Trendline', mode='lines',
+            go.Scatter(x=trend_line['Year'],
+                       y=trend_line['RSI'],
+                       name=region + ' Trend Line', mode='lines',
                        line={'color':
                                  px.colors.qualitative.Plotly[swatch_index %
                                                               len(px.colors.qualitative.Plotly)]}),
@@ -74,12 +74,12 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
         swatch_index += 1
 
     snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
-    snowfall_mean_trendline = process.lowess(snowfall_mean, 'Year', 'RSI')
+    snowfall_mean_trend_line = process.lowess(snowfall_mean, 'Year', 'RSI')
 
     fig.add_trace(
-        go.Scatter(x=snowfall_mean_trendline['Year'],
-                   y=snowfall_mean_trendline['RSI'],
-                   name='Overall Mean Trendline', mode='lines',
+        go.Scatter(x=snowfall_mean_trend_line['Year'],
+                   y=snowfall_mean_trend_line['RSI'],
+                   name='Overall Mean Trend Line', mode='lines',
                    line={'color': px.colors.qualitative.Plotly[swatch_index %
                                                                len(px.colors.qualitative.Plotly)]}),
         secondary_y=False
@@ -94,11 +94,11 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
                                                                len(px.colors.qualitative.Plotly)]}),
         secondary_y=True
     )
-    temperature_trendline = process.lowess(temperature, 'Year', 'Raw')
+    temperature_trend_line = process.lowess(temperature, 'Year', 'Raw')
     fig.add_trace(
-        go.Scatter(x=temperature_trendline['Year'],
-                   y=temperature_trendline['Raw'],
-                   name='Temperature Trendline', mode='lines',
+        go.Scatter(x=temperature_trend_line['Year'],
+                   y=temperature_trend_line['Raw'],
+                   name='Temperature Trend Line', mode='lines',
                    line={'color': px.colors.qualitative.Plotly[swatch_index %
                                                                len(px.colors.qualitative.Plotly)]}),
         secondary_y=True
@@ -117,7 +117,7 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
     fig.show()
 
 
-def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
+def show_correlation_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                                  rsi_axis_range: List[float]) -> None:
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
@@ -143,13 +143,13 @@ def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFra
                        name=region, mode='markers',
                        line = {'color': px.colors.qualitative.Plotly[swatch_index %
                                                       len(px.colors.qualitative.Plotly)]}))
-        regional_trendline =\
+        regional_trend_line =\
             process.lowess(snowfall_with_temps.query('Region == "'
                                                      + region + '"'), 'Temperature', 'RSI')
         fig.add_trace(
-            go.Scatter(x=regional_trendline['Temperature'],
-                       y=regional_trendline['RSI'],
-                       name=region + ' Trendline', mode='lines',
+            go.Scatter(x=regional_trend_line['Temperature'],
+                       y=regional_trend_line['RSI'],
+                       name=region + ' Trend Line', mode='lines',
                        line={'color':
                              px.colors.qualitative.Plotly[swatch_index % len(
                                  px.colors.qualitative.Plotly)]}))
@@ -167,12 +167,12 @@ def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFra
                    line = {'color': px.colors.qualitative.Plotly[swatch_index % len(
                                px.colors.qualitative.Plotly)]}))
 
-    snowfall_mean_trendline = process.lowess(snowfall_mean_with_temps, 'Temperature', 'RSI')
+    snowfall_mean_trend_line = process.lowess(snowfall_mean_with_temps, 'Temperature', 'RSI')
 
     fig.add_trace(
-        go.Scatter(x=snowfall_mean_trendline['Temperature'],
-                   y=snowfall_mean_trendline['RSI'],
-                   name='Overall Mean Trendline', mode='lines',
+        go.Scatter(x=snowfall_mean_trend_line['Temperature'],
+                   y=snowfall_mean_trend_line['RSI'],
+                   name='Overall Mean Trend_Line', mode='lines',
                    line = {'color': px.colors.qualitative.Plotly[swatch_index % len(
                                    px.colors.qualitative.Plotly)]}))
 
