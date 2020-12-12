@@ -20,9 +20,6 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                              rsi_color_scale_range: List[float]) -> None:
     """Show an animated choropleth of snowfall vs temperature over time.
     """
-    common_years = process.common_years([snowfall, temperature])
-    snowfall, temperature = common_years[0], common_years[1]
-
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
 
@@ -48,9 +45,6 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
     """Show a scatterplot with lowess trendlines for each individual region, the average of the
     regions, and the temperature.
     """
-    common_years = process.common_years([snowfall, temperature])
-    snowfall, temperature = common_years[0], common_years[1]
-
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
 
@@ -125,9 +119,6 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
 
 def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                                  rsi_axis_range: List[float]) -> None:
-    common_years = process.common_years([snowfall, temperature])
-    snowfall, temperature = common_years[0], common_years[1]
-
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
 
@@ -186,7 +177,6 @@ def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFra
                                    px.colors.qualitative.Plotly)]}))
 
     fig.show()
-
 
 
 if __name__ == '__main__':

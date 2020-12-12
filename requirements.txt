@@ -1,0 +1,10 @@
+# CSC110 Final Project: US Snowfall vs. Global Land-Ocean Temperature Index
+# Gabe Guralnick, Matthew Toohey, Monica Di Gennaro, Nathan Hansen
+
+# Required Python Libraries
+pandas
+statsmodels
+plotly
+python-ta
+
+# Built-ins: doctest, typing, OS, CSV
