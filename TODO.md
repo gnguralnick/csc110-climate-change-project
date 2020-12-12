@@ -27,3 +27,11 @@
 - [x] Add regression function for Overall Mean RSI and Temperature.
     - [ ] Fix titles
     - [ ] Separate by region
+
+### Cleanup
+
+- [ ] Create `requirements.txt` files with all required modules.
+- [ ] Make sure module titles and descriptions are in a similar format to the code we were given by the profs, and adapt it to claim copyright on our work?
+- [ ] Finish docstrings, preconditions, and representation invariants for **all functions**.
+	- Make doctests where appropriate, bough they are not required.
+- [ ] Make sure all files have been checked by python_ta by running them as main, and that no doctests are failing, also see if we can figure out that recursion error with python_ta in the main module.
