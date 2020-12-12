@@ -10,7 +10,8 @@ import pandas as pd
 
 def run_all_default() -> None:
     run_choropleth([0, 10])
-    run_comparison_scatterplot([0, 2])
+    run_year_comparison_scatterplot([0, 2])
+    run_correlation_scatterplot()
 
 
 def run_choropleth(rsi_color_scale_range: List[float]) -> None:
@@ -26,7 +27,7 @@ def run_choropleth(rsi_color_scale_range: List[float]) -> None:
     vis.show_animated_choropleth(states_snowfall_data, temperature_data, rsi_color_scale_range)
 
 
-def run_comparison_scatterplot(rsi_axis_range: List[float]) -> None:
+def run_year_comparison_scatterplot(rsi_axis_range: List[float]) -> None:
     original_snowfall_data = si.df_snow(
         './data/snowfall/regional-snowfall-index_c20191218.csv',
         ['Region', 'Year', 'RSI'])
