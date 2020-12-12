@@ -63,7 +63,7 @@ def remove_national(df: pd.DataFrame) -> pd.DataFrame:
     return df.query('Region != "National"')
 
 
-def agg_years(df: pd.DataFrame, method: callable) -> pd.DataFrame:
+def agg_years(df: pd.DataFrame) -> pd.DataFrame:
     """This function aggregates the snowfall data by year and region, given a method of
     DataFrameGroupBy.
 
@@ -74,7 +74,7 @@ def agg_years(df: pd.DataFrame, method: callable) -> pd.DataFrame:
         - 'RSI' in df.columns
         - hasattr(pd.core.groupby.generic.DataFrameGroupBy, method.__name__)
     """
-    return method(df.groupby(['Year', 'Region'], as_index=False)[['RSI']])
+    return df.groupby(['Year', 'Region'], as_index=False)[['RSI']].mean()
 
 
 def regions_to_states(df: pd.DataFrame) -> pd.DataFrame:
