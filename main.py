@@ -9,7 +9,8 @@ import pandas as pd
 
 
 def run_all_default() -> None:
-    snowfall_data, temperature_data = import_datasets()[0], import_datasets()[1]
+    data = import_datasets()
+    snowfall_data, temperature_data = data[0], data[1]
     run_choropleth([0, 10], snowfall_data, temperature_data)
     run_year_comparison_scatterplot([0, 2], snowfall_data, temperature_data)
     run_correlation_scatterplot([0, 3], snowfall_data, temperature_data)
