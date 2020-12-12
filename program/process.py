@@ -36,19 +36,34 @@ def common_years(df_list: List[pd.DataFrame]) -> List[pd.DataFrame]:
     return [df.query(query_so_far[0:-4]) for df in df_list]
 
 
-def lowess_smooth(df: pd.DataFrame, data: str) -> pd.DataFrame:
-    """Given a DataFrame containing a 'Year' column and column with the name of the data input,
-    return a lowess smoothed DataFrame with only the year and the smoothed data.
+def lowess(df: pd.DataFrame, x: str, y:str) -> pd.DataFrame:
+    """Given a DataFrame containing both x and y column names, return a lowess smoothed DataFrame
+    with only the x and y data.
 
     Preconditions:
         - df.empty == False
-        - 'Year' in df.columns
-        - data in df.columns
+        - x in df.columns
+        - y in df.columns
     """
     return pd.DataFrame(sm.nonparametric.lowess(
-        endog=df[data],
-        exog=df['Year']
-    ), columns=['Year', data])
+        endog=df[y],
+        exog=df[x]
+    ), columns=[x, y])
+
+
+def ols(df: pd.DataFrame, x:str, y:str) -> pd.DataFrame:
+    """Given a DataFrame containing both x and y column names, return an ordinary least squares
+    linear regression prediction DataFrame with only the x and y data.
+
+    Preconditions:
+        - df.empty == False
+        - x in df.columns
+        - y in df.columns
+    """
+    prediction_data = sm.regression.linear_model.OLS(endog=df[y], exog=df[x]).fit().predict()
+    df_copy = df.copy()
+    df_copy[y] = prediction_data
+    return df_copy
 
 
 def add_year_temps(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> pd.DataFrame:

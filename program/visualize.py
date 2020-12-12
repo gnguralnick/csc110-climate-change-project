@@ -66,7 +66,8 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
                        line={'color': px.colors.qualitative.Plotly[swatch_index % len(px.colors.qualitative.Plotly)]}),
             secondary_y=False
         )
-        trendline = process.lowess_smooth(snowfall.query('Region == "' + region + '"'), 'RSI')
+        trendline = process.lowess(snowfall.query('Region == "' + region + '"'), 'Year',
+                                          'RSI')
         fig.add_trace(
             go.Scatter(x=trendline['Year'],
                        y=trendline['RSI'],
@@ -79,7 +80,7 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
         swatch_index += 1
 
     snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
-    snowfall_mean_trendline = process.lowess_smooth(snowfall_mean, 'RSI')
+    snowfall_mean_trendline = process.lowess(snowfall_mean, 'Year', 'RSI')
 
     fig.add_trace(
         go.Scatter(x=snowfall_mean_trendline['Year'],
@@ -99,7 +100,7 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
                                                                len(px.colors.qualitative.Plotly)]}),
         secondary_y=True
     )
-    temperature_trendline = process.lowess_smooth(temperature, 'Raw')
+    temperature_trendline = process.lowess(temperature, 'Year', 'Raw')
     fig.add_trace(
         go.Scatter(x=temperature_trendline['Year'],
                    y=temperature_trendline['Raw'],
@@ -123,21 +124,66 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
 
 
 def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
-                                 trendline: str) -> None:
+                                 rsi_axis_range: List[float]) -> None:
     common_years = process.common_years([snowfall, temperature])
     snowfall, temperature = common_years[0], common_years[1]
 
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
 
-    snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
-
-    data = process.add_year_temps(snowfall_mean, temperature)
+    snowfall_with_temps = process.add_year_temps(snowfall, temperature)
 
     title = 'US Central and Eastern Yearly Mean RSI vs. Global Land-Ocean Temperature Index From ' \
             + str(int(min_year)) + ' to ' + str(int(max_year))
 
-    fig = px.scatter(data, x='Temperature', y='RSI', trendline=trendline, title=title)
+    fig = go.Figure()
+
+    fig.update_layout(title={'text': title})
+    fig.update_xaxes({'title': {'text': 'Degrees Celsius'}})
+    fig.update_yaxes({'title': {'text': 'RSI'}})
+    fig.update_yaxes({'range': rsi_axis_range})
+
+    swatch_index = 0
+
+    for region in snowfall['Region'].drop_duplicates():
+        fig.add_trace(
+            go.Scatter(x=snowfall_with_temps.query('Region == "' + region + '"')['Temperature'],
+                       y=snowfall_with_temps.query('Region == "' + region + '"')['RSI'],
+                       name=region, mode='markers',
+                       line = {'color': px.colors.qualitative.Plotly[swatch_index %
+                                                      len(px.colors.qualitative.Plotly)]}))
+        regional_trendline =\
+            process.lowess(snowfall_with_temps.query('Region == "'
+                                                     + region + '"'), 'Temperature', 'RSI')
+        fig.add_trace(
+            go.Scatter(x=regional_trendline['Temperature'],
+                       y=regional_trendline['RSI'],
+                       name=region + ' Trendline', mode='lines',
+                       line={'color':
+                             px.colors.qualitative.Plotly[swatch_index % len(
+                                 px.colors.qualitative.Plotly)]}))
+
+        swatch_index += 1
+
+    snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
+
+    snowfall_mean_with_temps = process.add_year_temps(snowfall_mean, temperature)
+
+    fig.add_trace(
+        go.Scatter(x=snowfall_mean_with_temps['Temperature'],
+                   y=snowfall_mean_with_temps['RSI'],
+                   name='Overall Mean', mode='markers',
+                   line = {'color': px.colors.qualitative.Plotly[swatch_index % len(
+                               px.colors.qualitative.Plotly)]}))
+
+    snowfall_mean_trendline = process.lowess(snowfall_mean_with_temps, 'Temperature', 'RSI')
+
+    fig.add_trace(
+        go.Scatter(x=snowfall_mean_trendline['Temperature'],
+                   y=snowfall_mean_trendline['RSI'],
+                   name='Overall Mean Trendline', mode='lines',
+                   line = {'color': px.colors.qualitative.Plotly[swatch_index % len(
+                                   px.colors.qualitative.Plotly)]}))
 
     fig.show()
 

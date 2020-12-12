@@ -11,8 +11,7 @@ import pandas as pd
 def run_all_default() -> None:
     run_choropleth([0, 10])
     run_year_comparison_scatterplot([0, 2])
-    run_correlation_scatterplot('ols')
-    run_correlation_scatterplot('lowess')
+    run_correlation_scatterplot([0, 3])
 
 
 def run_choropleth(rsi_color_scale_range: List[float]) -> None:
@@ -40,7 +39,7 @@ def run_year_comparison_scatterplot(rsi_axis_range: List[float]) -> None:
     vis.show_year_comparison_scatterplot(aggregated_snowfall_data, temperature_data, rsi_axis_range)
 
 
-def run_correlation_scatterplot(trendline: str) -> None:
+def run_correlation_scatterplot(rsi_axis_range: List[float]) -> None:
     original_snowfall_data = si.df_snow(
         './data/snowfall/regional-snowfall-index_c20191218.csv',
         ['Region', 'Year', 'RSI'])
@@ -49,7 +48,7 @@ def run_correlation_scatterplot(trendline: str) -> None:
                                             pd.core.groupby.generic.DataFrameGroupBy.mean)
     temperature_data = ti.df_temp(
         './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
-    vis.show_correlation_scatterplot(aggregated_snowfall_data, temperature_data, trendline)
+    vis.show_correlation_scatterplot(aggregated_snowfall_data, temperature_data, rsi_axis_range)
 
 
 if __name__ == '__main__':
