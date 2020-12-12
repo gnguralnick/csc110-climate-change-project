@@ -24,4 +24,6 @@
     - [ ] ~~Figure out how to add fade and duration to transitions, if possible.~~
         - Wasn't able to figure out if it was possible.
 - [x] Line graph of average totals over time, if we have time after?
-    - [ ] Add regression function for Overall Mean RSI and Temperature.
+- [x] Add regression function for Overall Mean RSI and Temperature.
+    - [ ] Fix titles
+    - [ ] Separate by region
