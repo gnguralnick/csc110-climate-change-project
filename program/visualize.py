@@ -63,7 +63,7 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
             go.Scatter(x=snowfall.query('Region == "' + region + '"')['Year'],
                        y=snowfall.query('Region == "' + region + '"')['RSI'],
                        name=region, mode='markers',
-                       line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+                       line={'color': px.colors.qualitative.Plotly[swatch_index % len(px.colors.qualitative.Plotly)]}),
             secondary_y=False
         )
         trendline = process.lowess_smooth(snowfall.query('Region == "' + region + '"'), 'RSI')
@@ -71,7 +71,9 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
             go.Scatter(x=trendline['Year'],
                        y=trendline['RSI'],
                        name=region + ' Trendline', mode='lines',
-                       line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+                       line={'color':
+                                 px.colors.qualitative.Plotly[swatch_index %
+                                                              len(px.colors.qualitative.Plotly)]}),
             secondary_y=False
         )
         swatch_index += 1
@@ -83,7 +85,8 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
         go.Scatter(x=snowfall_mean_trendline['Year'],
                    y=snowfall_mean_trendline['RSI'],
                    name='Overall Mean Trendline', mode='lines',
-                   line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+                   line={'color': px.colors.qualitative.Plotly[swatch_index %
+                                                               len(px.colors.qualitative.Plotly)]}),
         secondary_y=False
     )
 
@@ -92,7 +95,8 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
     fig.add_trace(
         go.Scatter(x=temperature['Year'], y=temperature['Raw'], name='Temperature',
                    mode='markers',
-                   line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+                   line={'color': px.colors.qualitative.Plotly[swatch_index %
+                                                               len(px.colors.qualitative.Plotly)]}),
         secondary_y=True
     )
     temperature_trendline = process.lowess_smooth(temperature, 'Raw')
@@ -100,7 +104,8 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
         go.Scatter(x=temperature_trendline['Year'],
                    y=temperature_trendline['Raw'],
                    name='Temperature Trendline', mode='lines',
-                   line={'color': px.colors.qualitative.Plotly[swatch_index]}),
+                   line={'color': px.colors.qualitative.Plotly[swatch_index %
+                                                               len(px.colors.qualitative.Plotly)]}),
         secondary_y=True
     )
 
