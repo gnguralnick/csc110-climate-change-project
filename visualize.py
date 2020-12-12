@@ -4,8 +4,8 @@ from typing import List
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import process
+from plotly.subplots import make_subplots as msp
+import process as pc
 
 
 REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', 'MD', 'NH'],
@@ -40,15 +40,15 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
     fig.show()
 
 
-def show_year_comparison_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
-                                     rsi_axis_range: List[float]) -> None:
+def show_yearly_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
+                             rsi_axis_range: List[float]) -> None:
     """Show a scatter plot with lowess trend lines for each individual region, the average of the
     regions, and the temperature.
     """
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
 
-    fig = make_subplots(specs=[[{'secondary_y': True}]])
+    fig = msp(specs=[[{'secondary_y': True}]])
 
     swatch_index = 0
 
@@ -57,24 +57,25 @@ def show_year_comparison_scatter_plot(snowfall: pd.DataFrame, temperature: pd.Da
             go.Scatter(x=snowfall.query('Region == "' + region + '"')['Year'],
                        y=snowfall.query('Region == "' + region + '"')['RSI'],
                        name=region, mode='markers',
-                       line={'color': px.colors.qualitative.Plotly[swatch_index % len(px.colors.qualitative.Plotly)]}),
+                       line={'color':
+                             px.colors.qualitative.Plotly[swatch_index %
+                                                          len(px.colors.qualitative.Plotly)]}),
             secondary_y=False
         )
-        trend_line = process.lowess(snowfall.query('Region == "' + region + '"'), 'Year',
-                                          'RSI')
+        trend_line = pc.lowess(snowfall.query('Region == "' + region + '"'), 'Year', 'RSI')
         fig.add_trace(
             go.Scatter(x=trend_line['Year'],
                        y=trend_line['RSI'],
                        name=region + ' Trend Line', mode='lines',
                        line={'color':
-                                 px.colors.qualitative.Plotly[swatch_index %
-                                                              len(px.colors.qualitative.Plotly)]}),
+                             px.colors.qualitative.Plotly[swatch_index %
+                                                          len(px.colors.qualitative.Plotly)]}),
             secondary_y=False
         )
         swatch_index += 1
 
     snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
-    snowfall_mean_trend_line = process.lowess(snowfall_mean, 'Year', 'RSI')
+    snowfall_mean_trend_line = pc.lowess(snowfall_mean, 'Year', 'RSI')
 
     fig.add_trace(
         go.Scatter(x=snowfall_mean_trend_line['Year'],
@@ -94,7 +95,7 @@ def show_year_comparison_scatter_plot(snowfall: pd.DataFrame, temperature: pd.Da
                                                                len(px.colors.qualitative.Plotly)]}),
         secondary_y=True
     )
-    temperature_trend_line = process.lowess(temperature, 'Year', 'Raw')
+    temperature_trend_line = pc.lowess(temperature, 'Year', 'Raw')
     fig.add_trace(
         go.Scatter(x=temperature_trend_line['Year'],
                    y=temperature_trend_line['Raw'],
@@ -118,11 +119,14 @@ def show_year_comparison_scatter_plot(snowfall: pd.DataFrame, temperature: pd.Da
 
 
 def show_correlation_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
-                                 rsi_axis_range: List[float]) -> None:
+                                  rsi_axis_range: List[float]) -> None:
+    """Show a scatter plot that shows the correlation between the temperature and RSI in each
+    region, and for the overall mean.
+    """
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
 
-    snowfall_with_temps = process.add_year_temps(snowfall, temperature)
+    snowfall_with_temps = pc.add_year_temps(snowfall, temperature)
 
     title = 'US Central and Eastern Yearly Mean RSI vs. Global Land-Ocean Temperature Index From ' \
             + str(int(min_year)) + ' to ' + str(int(max_year))
@@ -141,11 +145,11 @@ def show_correlation_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFr
             go.Scatter(x=snowfall_with_temps.query('Region == "' + region + '"')['Temperature'],
                        y=snowfall_with_temps.query('Region == "' + region + '"')['RSI'],
                        name=region, mode='markers',
-                       line = {'color': px.colors.qualitative.Plotly[swatch_index %
-                                                      len(px.colors.qualitative.Plotly)]}))
-        regional_trend_line =\
-            process.lowess(snowfall_with_temps.query('Region == "'
-                                                     + region + '"'), 'Temperature', 'RSI')
+                       line={'color':
+                             px.colors.qualitative.Plotly[swatch_index %
+                                                          len(px.colors.qualitative.Plotly)]}))
+        regional_trend_line = pc.lowess(snowfall_with_temps.query('Region == "' + region + '"'),
+                                        'Temperature', 'RSI')
         fig.add_trace(
             go.Scatter(x=regional_trend_line['Temperature'],
                        y=regional_trend_line['RSI'],
@@ -158,23 +162,23 @@ def show_correlation_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFr
 
     snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
 
-    snowfall_mean_with_temps = process.add_year_temps(snowfall_mean, temperature)
+    snowfall_mean_with_temps = pc.add_year_temps(snowfall_mean, temperature)
 
     fig.add_trace(
         go.Scatter(x=snowfall_mean_with_temps['Temperature'],
                    y=snowfall_mean_with_temps['RSI'],
                    name='Overall Mean', mode='markers',
-                   line = {'color': px.colors.qualitative.Plotly[swatch_index % len(
-                               px.colors.qualitative.Plotly)]}))
+                   line={'color': px.colors.qualitative.Plotly[swatch_index %
+                                                               len(px.colors.qualitative.Plotly)]}))
 
-    snowfall_mean_trend_line = process.lowess(snowfall_mean_with_temps, 'Temperature', 'RSI')
+    snowfall_mean_trend_line = pc.lowess(snowfall_mean_with_temps, 'Temperature', 'RSI')
 
     fig.add_trace(
         go.Scatter(x=snowfall_mean_trend_line['Temperature'],
                    y=snowfall_mean_trend_line['RSI'],
                    name='Overall Mean Trend_Line', mode='lines',
-                   line = {'color': px.colors.qualitative.Plotly[swatch_index % len(
-                                   px.colors.qualitative.Plotly)]}))
+                   line={'color': px.colors.qualitative.Plotly[swatch_index %
+                                                               len(px.colors.qualitative.Plotly)]}))
 
     fig.show()
 
@@ -183,8 +187,9 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts', 'pandas', 'plotly.express', 'process'],
-        'allowed-io': ['import_as_dict'],
+        'extra-imports': ['python_ta.contracts', 'pandas', 'plotly.express',
+                          'plotly.graph_objects', 'plotly.subplots', 'process'],
+        'allowed-io': [],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })

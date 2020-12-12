@@ -1,7 +1,5 @@
 """CSC110 Project -- Importing Temperature Data"""
 
-import csv
-from os import path
 import pandas as pd
 
 
@@ -11,10 +9,10 @@ def df_temp(filepath: str) -> pd.DataFrame:
 
     Preconditions:
         - path.exists(filepath)
-        - os.path.splitext(filepath)[1] == '.csv'
+        - from os import path; os.path.splitext(filepath)[1] == '.csv'
 
-    >>> path = 'data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
-    >>> df_temp(path)
+    >>> data_path = 'data/land-ocean_temperature_index/land-ocean_temperature_index.csv'
+    >>> df_temp(data_path)
          Year   Raw  Smoothed
     0    1880 -0.15     -0.08
     1    1881 -0.07     -0.12
@@ -38,8 +36,8 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['csv', 'os', 'python_ta.contracts', 'pandas'],
-        'allowed-io': ['import_as_dict'],
+        'extra-imports': ['python_ta.contracts', 'pandas'],
+        'allowed-io': ['df_temp'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })

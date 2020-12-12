@@ -27,8 +27,6 @@ def common_years(df_list: List[pd.DataFrame]) -> List[pd.DataFrame]:
     for i in range(1, len(df_list)):
         years_so_far = years_so_far.intersection(set(df_list[i]['Year']))
 
-    years_so_far = years_so_far.difference({1991})
-
     query_so_far = ''
     for year in years_so_far:
         query_so_far += 'Year == ' + str(year) + ' or '
@@ -36,7 +34,7 @@ def common_years(df_list: List[pd.DataFrame]) -> List[pd.DataFrame]:
     return [df.query(query_so_far[0:-4]) for df in df_list]
 
 
-def lowess(df: pd.DataFrame, x: str, y:str) -> pd.DataFrame:
+def lowess(df: pd.DataFrame, x: str, y: str) -> pd.DataFrame:
     """Given a DataFrame containing both x and y column names, return a lowess smoothed DataFrame
     with only the x and y data.
 
@@ -51,7 +49,7 @@ def lowess(df: pd.DataFrame, x: str, y:str) -> pd.DataFrame:
     ), columns=[x, y])
 
 
-def ols(df: pd.DataFrame, x:str, y:str) -> pd.DataFrame:
+def ols(df: pd.DataFrame, x: str, y: str) -> pd.DataFrame:
     """Given a DataFrame containing both x and y column names, return an ordinary least squares
     linear regression prediction DataFrame with only the x and y data.
 
@@ -67,6 +65,10 @@ def ols(df: pd.DataFrame, x:str, y:str) -> pd.DataFrame:
 
 
 def add_year_temps(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> pd.DataFrame:
+    """Given both snowfall and temperature dataframes, return the snowfall dataframe with an
+    added temperature column that corresponds to the raw temperature in the year of that
+    row in the temperature dataframe.
+    """
     conversion_dict = dict(zip(temperature['Year'], temperature['Raw']))
     return snowfall.assign(temperature=[
         conversion_dict[row['Year']]
@@ -77,8 +79,8 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['python_ta.contracts', 'pandas', 'statsmodels'],
-        'allowed-io': ['import_as_dict'],
+        'extra-imports': ['python_ta.contracts', 'pandas', 'statsmodels.api'],
+        'allowed-io': [],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
     })

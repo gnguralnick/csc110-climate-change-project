@@ -1,6 +1,5 @@
 """CSC110 Project -- Importing Snowfall Data"""
 
-from os import path
 from typing import List
 import pandas as pd
 
@@ -17,12 +16,12 @@ def df_snow(filepath: str, parameters: List[str]) -> pd.DataFrame:
     """Return a dataframe containing the given parameters from the given csv file.
 
     Preconditions:
-        - path.exists(filepath)
-        - os.path.splitext(filepath)[1] == '.csv'
+        - from os import path; path.exists(filepath)
+        - from os import path; path.splitext(filepath)[1] == '.csv'
         - len(parameters) >= 1
 
-    >>> path = 'data/snowfall/regional-snowfall-index_c20191218.csv'
-    >>> df_snow(path, ['Region', 'Year', 'RSI'])
+    >>> data_path = 'data/snowfall/regional-snowfall-index_c20191218.csv'
+    >>> df_snow(data_path, ['Region', 'Year', 'RSI'])
                                Region     RSI  Year
     0                        National   0.000  2019
     1                       Northeast   2.386  2019
@@ -122,7 +121,7 @@ if __name__ == '__main__':
     import python_ta
 
     python_ta.check_all(config={
-        'extra-imports': ['os', 'python_ta.contracts', 'pandas'],
+        'extra-imports': ['python_ta.contracts', 'pandas'],
         'allowed-io': ['df_snow'],
         'max-line-length': 100,
         'disable': ['R1705', 'C0200']
