@@ -8,8 +8,12 @@ The snowfall data was obtained from the NCEI, specifically at [this link](https:
 
 ### Choropleth
 
-![Choropleth Preview](./previews/choropleth_preview.gif)
+![Choropleth Preview](./previews/choropleth.gif)
 
-### Scatterplot
+### Year Comparison Scatterplot
 
-![Scatterplot Preview](./previews/scatterplot_preview.png)
+![Year Comparison Scatterplot Preview](./previews/year_comparison_scatterplot.png)
+
+### Correlation Scatterplot
+
+![Correlation Scatterplot Preview](./previews/correlation_scatterplot.png)
