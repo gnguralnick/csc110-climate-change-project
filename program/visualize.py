@@ -117,7 +117,8 @@ def show_year_comparison_scatterplot(snowfall: pd.DataFrame, temperature: pd.Dat
     fig.show()
 
 
-def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> None:
+def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
+                                 trendline: str) -> None:
     common_years = process.common_years([snowfall, temperature])
     snowfall, temperature = common_years[0], common_years[1]
 
@@ -127,8 +128,9 @@ def show_correlation_scatterplot(snowfall: pd.DataFrame, temperature: pd.DataFra
     snowfall_mean = snowfall.groupby(['Year'], as_index=False)[['RSI']].mean()
 
     data = process.add_year_temps(snowfall_mean, temperature)
-    
-    fig = px.scatter(data, x='Temperature', y='RSI', trendline='ols')
+
+    fig = px.scatter(data, x='Temperature', y='RSI', trendline=trendline, title=title)
+
     fig.show()
 
 
