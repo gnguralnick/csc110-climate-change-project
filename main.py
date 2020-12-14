@@ -21,13 +21,13 @@ def run_all_default() -> None:
 def import_datasets() -> List[pd.DataFrame]:
     """Import all datasets and filter them so they are ready to be passed to the graph functions.
     """
-    original_snowfall = si.df_snow('./data/snowfall/regional-snowfall-index_c20191218.csv',
+    original_snowfall = si.df_snow('./regional-snowfall-index_c20191218.csv',
                                    ['Region', 'Year', 'RSI'])
     no_national_snowfall = si.remove_national(original_snowfall)
     aggregated_snowfall = si.agg_years(no_national_snowfall)
 
     temperature = ti.df_temp(
-        './data/land-ocean_temperature_index/land-ocean_temperature_index.csv')
+        './land-ocean_temperature_index.csv')
     return pc.common_years([aggregated_snowfall, temperature])
 
 
