@@ -49,21 +49,6 @@ def lowess(df: pd.DataFrame, x: str, y: str) -> pd.DataFrame:
     ), columns=[x, y])
 
 
-def ols(df: pd.DataFrame, x: str, y: str) -> pd.DataFrame:
-    """Given a DataFrame containing both x and y column names, return an ordinary least squares
-    linear regression prediction DataFrame with only the x and y data.
-
-    Preconditions:
-        - df.empty == False
-        - x in df.columns
-        - y in df.columns
-    """
-    prediction_data = sm.regression.linear_model.OLS(endog=df[y], exog=df[x]).fit().predict()
-    df_copy = df.copy()
-    df_copy[y] = prediction_data
-    return df_copy
-
-
 def add_year_temps(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> pd.DataFrame:
     """Given both snowfall and temperature dataframes, return the snowfall dataframe with an
     added temperature column that corresponds to the raw temperature in the year of that
