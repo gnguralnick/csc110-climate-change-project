@@ -34,6 +34,15 @@ def import_datasets() -> List[pd.DataFrame]:
 def run_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                    rsi_color_scale_range: List[float]) -> None:
     """Show the choropleth graph.
+
+    Preconditions:
+        - 'Year' in snowfall.columns
+        - 'Region' in snowfall.columns
+        - 'RSI' in snowfall.columns
+        - 'Year' in temperature.columns
+        - 'Raw' in temperature.columns
+        - len(rsi_color_scale_range) == 2
+        - rsi_color_scale_range[0] < rsi_color_scale_range[1]
     """
     states_snowfall_data = si.regions_to_states(snowfall)
     vis.show_animated_choropleth(states_snowfall_data, temperature, rsi_color_scale_range)
@@ -42,6 +51,15 @@ def run_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
 def run_yearly_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                             rsi_axis_range: List[float]) -> None:
     """Show the year comparison scatter_plot.
+
+    Preconditions:
+        - 'Year' in snowfall.columns
+        - 'Region' in snowfall.columns
+        - 'RSI' in snowfall.columns
+        - 'Year' in temperature.columns
+        - 'Raw' in temperature.columns
+        - len(rsi_axis_range) == 2
+        - rsi_axis_range[0] < rsi_axis_range[1]
     """
     vis.show_yearly_scatter_plot(snowfall, temperature, rsi_axis_range)
 
@@ -49,6 +67,15 @@ def run_yearly_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
 def run_correlation_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                                  rsi_axis_range: List[float]) -> None:
     """Show the correlation scatter_plot.
+
+    Preconditions:
+        - 'Year' in snowfall.columns
+        - 'Region' in snowfall.columns
+        - 'RSI' in snowfall.columns
+        - 'Year' in temperature.columns
+        - 'Raw' in temperature.columns
+        - len(rsi_axis_range) == 2
+        - rsi_axis_range[0] < rsi_axis_range[1]
     """
     vis.show_correlation_scatter_plot(snowfall, temperature, rsi_axis_range)
 
