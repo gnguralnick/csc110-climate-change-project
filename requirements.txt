@@ -7,4 +7,4 @@ statsmodels
 plotly
 python-ta
 
-# Built-ins: doctest, typing, OS, CSV
+# Built-ins: doctest, typing, os, csv
