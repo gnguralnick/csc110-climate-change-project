@@ -19,6 +19,15 @@ REGIONS = {'Northeast': ['PA', 'NY', 'ME', 'MA', 'CT', 'RI', 'VT', 'NJ', 'DE', '
 def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                              rsi_color_scale_range: List[float]) -> None:
     """Show an animated choropleth of snowfall vs temperature over time.
+
+    Preconditions:
+        - 'Year' in snowfall.columns
+        - 'Region' in snowfall.columns
+        - 'RSI' in snowfall.columns
+        - 'Year' in temperature.columns
+        - 'Raw' in temperature.columns
+        - len(rsi_color_scale_range) == 2
+        - rsi_color_scale_range[0] < rsi_color_scale_range[1]
     """
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
@@ -31,7 +40,7 @@ def show_animated_choropleth(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                         color='RSI', range_color=rsi_color_scale_range, title=title,
                         labels={'Region': 'Region'})
 
-    fig['layout']['sliders'][0]['currentvalue']['prefix'] = 'Year, Temp='
+    fig['layout']['sliders'][0]['currentvalue']['prefix'] = 'Year, Temp (°C)='
 
     for step in fig['layout']['sliders'][0]['steps']:
         step['label'] = str(int(float(step['label']))) + ', ' + str(
@@ -44,6 +53,15 @@ def show_yearly_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFrame,
                              rsi_axis_range: List[float]) -> None:
     """Show a scatter plot with lowess trend lines for each individual region, the average of the
     regions, and the temperature.
+
+    Preconditions:
+        - 'Year' in snowfall.columns
+        - 'Region' in snowfall.columns
+        - 'RSI' in snowfall.columns
+        - 'Year' in temperature.columns
+        - 'Raw' in temperature.columns
+        - len(rsi_axis_range) == 2
+        - rsi_axis_range[0] < rsi_axis_range[1]
     """
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
@@ -122,6 +140,15 @@ def show_correlation_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFr
                                   rsi_axis_range: List[float]) -> None:
     """Show a scatter plot that shows the correlation between the temperature and RSI in each
     region, and for the overall mean.
+
+    Preconditions:
+        - 'Year' in snowfall.columns
+        - 'Region' in snowfall.columns
+        - 'RSI' in snowfall.columns
+        - 'Year' in temperature.columns
+        - 'Raw' in temperature.columns
+        - len(rsi_axis_range) == 2
+        - rsi_axis_range[0] < rsi_axis_range[1]
     """
     min_year = snowfall['Year'].min()
     max_year = snowfall['Year'].max()
@@ -176,7 +203,7 @@ def show_correlation_scatter_plot(snowfall: pd.DataFrame, temperature: pd.DataFr
     fig.add_trace(
         go.Scatter(x=snowfall_mean_trend_line['Temperature'],
                    y=snowfall_mean_trend_line['RSI'],
-                   name='Overall Mean Trend_Line', mode='lines',
+                   name='Overall Mean Trend Line', mode='lines',
                    line={'color': px.colors.qualitative.Plotly[swatch_index %
                                                                len(px.colors.qualitative.Plotly)]}))
 

@@ -54,8 +54,8 @@ def remove_national(df: pd.DataFrame) -> pd.DataFrame:
         - 'Region' in df.columns
 
     >>> data = {'Region': ['National', 'South'], 'Year': [2001, 2001], 'RSI': [3.0, 2.15]}
-    >>> df = pd.DataFrame(data)
-    >>> remove_national(df)
+    >>> df_data = pd.DataFrame(data)
+    >>> remove_national(df_data)
       Region  Year   RSI
     1  South  2001  2.15
     """
@@ -87,8 +87,8 @@ def regions_to_states(df: pd.DataFrame) -> pd.DataFrame:
         - 'RSI' in df.columns
 
     >>> data = {'Region': ['Northeast', 'South'], 'Year': [2001, 2001], 'RSI': [3.0, 2.15]}
-    >>> df = pd.DataFrame(data)
-    >>> regions_to_states(df)
+    >>> df_data = pd.DataFrame(data)
+    >>> regions_to_states(df_data)
       State    Year   RSI
     0    PA  2001.0  3.00
     0    NY  2001.0  3.00

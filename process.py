@@ -53,6 +53,11 @@ def add_year_temps(snowfall: pd.DataFrame, temperature: pd.DataFrame) -> pd.Data
     """Given both snowfall and temperature dataframes, return the snowfall dataframe with an
     added temperature column that corresponds to the raw temperature in the year of that
     row in the temperature dataframe.
+
+    Preconditions:
+        - 'Year' in snowfall.columns
+        - 'Year' in temperature.columns
+        - 'Raw' in temperature.columns
     """
     conversion_dict = dict(zip(temperature['Year'], temperature['Raw']))
     return snowfall.assign(temperature=[
