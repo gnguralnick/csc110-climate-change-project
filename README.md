@@ -1,4 +1,4 @@
-# CSC110 Project -- US Snowfall vs. Global Land-Ocean Temperature Index
+# CSC110 Climate Change Project: US Snowfall vs. Global Land-Ocean Temperature Index
 
 This repository contains datasets and code for a CSC110 project analyzing US Regional Snowfall Index data and global land-ocean temperature index data.
 
